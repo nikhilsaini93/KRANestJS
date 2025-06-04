@@ -29,8 +29,13 @@ export enum Role {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column()
-  createdById: number;
+  // @Column()
+  // createdById: number;
+
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'createdById' })
+  createdById: User
 
   
 

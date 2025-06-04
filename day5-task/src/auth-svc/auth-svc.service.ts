@@ -100,7 +100,7 @@ private genrateAccessToken(user: User): string {
     };
     return this.jwtService.sign(payload,{
         secret: "mySecretKey", 
-        expiresIn: '15m' 
+        expiresIn: '1h' 
     });
 }
 }
