@@ -114,17 +114,56 @@ limit 3;
 
 
 Display each category and total sales from products in that category.
+select c.categoryname, sum(o.total_order_amount) as totalsales
+from category c
+join products p on c.categoryid = p.category_id
+join orderdetails od on p.productid = od.productid
+join orders o on od.orderid = o.orderid
+group by c.categoryname;
 
 
 Find customers who bought products from more than one supplier.
+select c.customerid, c.firstname, c.lastname, count(distinct s.supplierid) as suppliercount
+from customers c
+join orders o on c.customerid = o.customerid
+join orderdetails od on o.orderid = od.orderid
+join products p on od.productid = p.productid
+join suppliers s on od.supplierid = s.supplierid
+group by c.customerid, c.firstname, c.lastname
+having count(distinct s.supplierid) > 1;
+
+
 
 List all products that were never ordered.
+select productid, product
+from products
+where productid not in (select distinct productid from orderdetails);
+
 
 Get each customer's latest order date.
+select c.customerid, c.firstname, c.lastname, max(o.orderdate) as latestorderdate
+from customerS c
+join orders o on c.customerid = o.customerid
+group by c.customerid, c.firstname, c.lastname;
+
 
 Find which shipper delivered the most orders.
+select s.shipperid, s.companyname, count(o.orderid) as ordercount
+from shippers s
+join orders o on s.shipperid = o.shipperid
+group by s.shipperid, s.companyname
+order by ordercount desc
+limit 1;
+
 
 List suppliers who have supplied more than 2 different products.
+
+select s.supplierid, s.companyname, count(od.productid) as productcount
+from suppliers s
+join orderdetails od on od.supplierid = s.supplierid
+join products p on od.productid = p.productid
+group by s.supplierid, s.companyname
+having count(od.productid) > 2;
 
 
 
