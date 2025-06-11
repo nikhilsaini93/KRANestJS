@@ -6,6 +6,7 @@ import { AuthSvcModule } from './auth-svc/auth-svc.module';
 import { UserMngModule } from './user-mng/user-mng.module';
 import { TypeORMError } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -19,7 +20,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    StudentSvcModule, AuthSvcModule, UserMngModule],
+    ThrottlerModule.forRoot({
+       throttlers: [
+        {
+          ttl: 60000,
+          limit: 5,
+        },
+      ],
+    }),
+      StudentSvcModule, AuthSvcModule, UserMngModule],
   controllers: [AppController],
   providers: [AppService],
 })
