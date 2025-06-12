@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { Customer } from '../../customer_details/entity/customer_details.entitiy';
 import { RoomReservation } from '../../room-reservation/enitity/room-reservation';
 import {Payment} from "../../payment/enitity/payment.entity"
+import { join } from 'path';
 
 @Entity('channel_management')
 export class ChannelManagement {
@@ -9,6 +10,7 @@ export class ChannelManagement {
   channel_mng_id: number;
 
   @ManyToOne(() => Customer, customer => customer.channelManagement)
+  @JoinColumn({ name: 'customerId' })
   customer: Customer;
 
   @Column({ type: 'varchar', length: 100 })
@@ -30,6 +32,7 @@ export class ChannelManagement {
   total_bill: number;
 
   @ManyToOne(() => Payment, payment => payment.channel_managements)
+  @JoinColumn({ name: 'paymentId' })
   payment: Payment;
 
   @OneToMany(() => RoomReservation, roomReservation => roomReservation.channel_management)

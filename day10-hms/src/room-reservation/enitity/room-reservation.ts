@@ -9,6 +9,7 @@ export class RoomReservation {
   res_id: number;
 
   @ManyToOne(() => Booking, booking => booking.room_reservations)
+  
   booking: Booking;
 
   @Column({ type: 'varchar', length: 30 })
@@ -35,28 +36,6 @@ export class RoomReservation {
    @OneToOne(() => GuestMng, guest => guest.roomReservation)
   guest: GuestMng;
 }
+    
 
 
-
-// import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
-// @Entity('room_reservation')
-// export class RoomReservation {
-//   @PrimaryGeneratedColumn()
-//   reservation_id: number;
-
-//   @Column()
-//   room_number: number;
-
-//   @Column()
-//   customer_id: number;
-
-//   @Column()
-//   check_in: Date;
-
-//   @Column()
-//   check_out: Date;
-
-//   @Column()
-//   reservation_status: string;
-// }

@@ -18,7 +18,7 @@ export class RoomMng {
   room_inspection: string;
 
   @ManyToOne(() => GuestMng)
-  @JoinColumn({ name: 'assigned_customer_id' })
+  @JoinColumn({ name: 'assigned_guest_id' })
   guest: GuestMng;
 
   @OneToMany(() => LostFoundManagement, lostFound => lostFound.room)

@@ -22,6 +22,7 @@ export class RoomService {
 
  
   @OneToMany(() => KotGeneration, (kot) => kot.roomService)
+  @JoinColumn({ name: 'ticket_orders_id' })
   ticketOrdersid: KotGeneration[];
 
 
