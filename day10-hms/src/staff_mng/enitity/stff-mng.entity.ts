@@ -4,12 +4,12 @@ import { StaffShifts } from 'src/staff-shifts/enitity/staff-shifts.entity';
 import { TaskMng } from 'src/task-mng/enitity/task-mng.entity';
 import { UserAccounts } from 'src/user-accounts/enitity/user-account.entity';
 
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, OneToOne, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable, OneToOne } from 'typeorm';
 
 @Entity('staff_mng')
 export class StaffMng {
   @PrimaryGeneratedColumn()
-  id: number;
+  staff_id: number;
 
   @Column()
   staff_type: number;
@@ -23,23 +23,30 @@ export class StaffMng {
   @Column()
   dept: string;
 
-  @ManyToOne(() => StaffAttendance, attendance => attendance.staffMembers)
-  @JoinColumn({ name: 'attendance_id' })
-  attendance: StaffAttendance;
 
-  @ManyToOne(() => StaffShifts, shift => shift.staffMembers)
-  @JoinColumn({ name: 'staff_shift_id' })
-  shift: StaffShifts;
-
-  @OneToMany(() => TaskMng, task => task.staffMembers)
-  @JoinColumn({ name: 'task_assign_id' })
-  task: TaskMng;
-
+  @OneToMany(() => StaffAttendance, attendance => attendance.staff)
   
-  @OneToMany(() => UserAccounts, user => user.staff)
+  attendanceRecords: StaffAttendance[];
+
+
+  @OneToMany(() => StaffShifts, shift => shift.staff)
+  shiftRecords: StaffShifts[];
+
+  // Many-to-many: Staff <--> Tasks
+  @ManyToMany(() => TaskMng, task => task.staffMembers)
+  @JoinTable({
+    name: 'staff_task_assignments',
+    joinColumn: { name: 'staff_id', referencedColumnName: 'staff_id' },
+    inverseJoinColumn: { name: 'task_id', referencedColumnName: 'task_id' },
+  })
+  tasks: TaskMng[];
+
+
+  @OneToOne(() => UserAccounts, user => user.staff)
   users: UserAccounts[];
+
 
   @ManyToMany(() => RoomService, roomService => roomService.staff)
   roomServices: RoomService[];
-
 }
+

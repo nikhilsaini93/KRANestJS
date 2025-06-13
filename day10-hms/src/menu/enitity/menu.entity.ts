@@ -15,7 +15,7 @@ export class Menu {
   menu_type: string | null;
 
   @Column({ type: 'numeric', nullable: true }) // CHECK (price >= 0) - This check is at DB level
-  price: number | null;
+  price: number ;
 
   @OneToMany(() => RoomService, roomService => roomService.menu)
   roomServices: RoomService[];

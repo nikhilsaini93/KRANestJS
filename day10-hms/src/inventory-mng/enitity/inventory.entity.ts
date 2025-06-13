@@ -15,13 +15,13 @@ export class InventoryMng {
   supplier_id: number | null;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
-  stock: string | null;
+  stock: number ;
 
   @Column({ type: 'date', nullable: true })
-  reorder_date: Date | null;
+  reorder_date: Date ;
 
   @Column({ type: 'date', nullable: true })
-  expiry_inventory: Date | null;
+  expiry_inventory: Date ;
 
   @Column({ type: 'int', nullable: true })
   purchase_order_id: number | null;

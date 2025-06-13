@@ -1,5 +1,5 @@
 import { StaffMng } from 'src/staff_mng/enitity/stff-mng.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, OneToOne } from 'typeorm';
 
 
 @Entity('user_accounts')
@@ -16,13 +16,14 @@ export class UserAccounts {
   @Column()
   role: string;
 
-  @ManyToOne(() => StaffMng, staff => staff.users)
+  @OneToOne(() => StaffMng, staff => staff.users)
   @JoinColumn({ name: 'staff_id' })
   staff: StaffMng;
 
-  @CreateDateColumn()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
 }
+

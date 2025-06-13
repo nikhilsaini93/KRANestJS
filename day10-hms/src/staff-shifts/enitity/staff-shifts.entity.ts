@@ -1,14 +1,12 @@
 import { StaffMng } from 'src/staff_mng/enitity/stff-mng.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
+
 
 
 @Entity('staff_shifts')
 export class StaffShifts {
   @PrimaryGeneratedColumn()
   staff_shift_id: number;
-
-  @Column()
-  staff_id: number;
 
   @Column()
   shift_start: string;
@@ -19,6 +17,7 @@ export class StaffShifts {
   @Column()
   shift_date: Date;
 
-  @OneToMany(() => StaffMng, staff => staff.shift)
-  staffMembers: StaffMng[];
+  @ManyToOne(() => StaffMng, staff => staff.shiftRecords)
+  @JoinColumn({ name: 'staff_id' })
+  staff: StaffMng;
 }

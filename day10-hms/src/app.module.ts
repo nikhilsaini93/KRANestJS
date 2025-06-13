@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BookingdetailsModule } from './bookingdetails/bookingdetails.module';
+
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { UserAccountsModule } from './user-accounts/user-accounts.module';
 import { ServiceRequestsModule } from './service-requests/service-requests.module';
-import { LostFoundManagementModule } from './lost-found-management/lost-found-management.module';
+
 import { ChannelManagementModule } from './channel-management/channel-management.module';
 import { RoomServiceModule } from './room-service/room-service.module';
 import { KotGenerationModule } from './kot-generation/kot-generation.module';
@@ -84,11 +84,11 @@ import { UserAccounts } from './user-accounts/enitity/user-account.entity';
     KotGenerationModule,
     RoomServiceModule,
     ChannelManagementModule,
-    LostFoundManagementModule,
+   
     ServiceRequestsModule,
     UserAccountsModule,
     AuditLogsModule,
-    BookingdetailsModule
+    
   ],
   controllers: [AppController],
   providers: [AppService],

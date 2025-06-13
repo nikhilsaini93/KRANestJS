@@ -25,13 +25,13 @@ export class KotGeneration {
   kot_id: number;
 
   @Column()
-  room_number: number;
+  room_service_id: number;
 
   @Column()
   order_time: Date;
 
   @Column()
-  quantity: number;
+  servings: number;
   @ManyToOne(() => RoomService, (roomService) => roomService.ticketOrdersid)
 @JoinColumn({ name: 'room_service_id' })
 roomService: RoomService;
