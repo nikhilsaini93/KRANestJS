@@ -1,3 +1,4 @@
+import { HousekeepingTask } from 'src/houseKeeping/enitity/houseKeeping.entity';
 import { RoomService } from 'src/room-service/enitity/room-service.entity';
 import { StaffAttendance } from 'src/staff-attendance/enitity/staff-attendence.entity';
 import { StaffShifts } from 'src/staff-shifts/enitity/staff-shifts.entity';
@@ -44,6 +45,10 @@ export class StaffMng {
 
   @OneToOne(() => UserAccounts, user => user.staff)
   users: UserAccounts[];
+
+  @OneToMany(() => HousekeepingTask , housekeeping => housekeeping.staff )
+  housekeepingTasks: HousekeepingTask[];
+
 
 
   @ManyToMany(() => RoomService, roomService => roomService.staff)

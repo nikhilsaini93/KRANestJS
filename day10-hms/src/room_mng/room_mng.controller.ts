@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { RoomMngService } from './room_mng.service';
 import { CreateRoomMngDto } from './DTO/room-mng.dto';
 import { CreateLostFoundDto } from 'src/lost-found-management/DTO/lost-found-mng.dto';
+import { CreateHousekeepingTaskDto } from 'src/houseKeeping/DTO/housekeeping.dto';
 
 @Controller('room-mng')
 export class RoomMngController {
@@ -16,6 +17,27 @@ export class RoomMngController {
     @Get("lost-found")
     async findAllLostFound() {
         return await this.roomMngService.findallLostFound();
+    }
+
+        @Get("housekeeping-tasks")
+    async findAllHousekeepingTasks() {
+        return await this.roomMngService.findAllHousekeepingTasks();
+    }
+    
+     @Get("housekeeping-tasks/:id")
+    async findHousekeepingTaskById(@Param("id") id: number) {
+        return await this.roomMngService.findHousekeepingTaskById(+id);
+    }
+
+
+    @Get("housekeeping-tasks/staff/:id")
+    async findHosuekeepingTaskbyStaffId(@Param("id") id: number) {
+        return await this.roomMngService.findHosuekeepingTaskbyStaffId(+id);
+    }
+
+    @Get("housekeeping-tasks/room/:id")
+    async findHouseKeepingTaskByRoomId(@Param("id") id: number  ) {
+        return await this.roomMngService.findHouseKeepingTaskByRoomId(+id);
     }
 
 
@@ -39,6 +61,21 @@ export class RoomMngController {
     async createlostFound(@Body() createLostFoundDto: CreateLostFoundDto) {
         return await this.roomMngService.createlostFound(createLostFoundDto);
     }
+
+
+
+
+   
+
+
+    @Post("housekeeping-tasks")
+    async createHousekeepingTask(@Body() createHousekeepingTaskDto: CreateHousekeepingTaskDto) {
+        return await this.roomMngService.createHousekeepingTask(createHousekeepingTaskDto);
+    }
+    
+
+
+
 
 }
 

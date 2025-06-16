@@ -1,4 +1,5 @@
 import { GuestMng } from 'src/guest-mng/enitity/guest-mng.entity';
+import { HousekeepingTask } from 'src/houseKeeping/enitity/houseKeeping.entity';
 import { LostFoundManagement } from 'src/lost-found-management/enitity/lost-found-mng.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 
@@ -23,4 +24,9 @@ export class RoomMng {
 
   @OneToMany(() => LostFoundManagement, lostFound => lostFound.room)
   lostFoundItems: LostFoundManagement[];
+
+  @OneToMany(() => HousekeepingTask , housekeepingTask => housekeepingTask.room)
+  housekeepingTasks: HousekeepingTask[];
+
+  
 }

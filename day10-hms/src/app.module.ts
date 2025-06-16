@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { UserAccountsModule } from './user-accounts/user-accounts.module';
 import { ServiceRequestsModule } from './service-requests/service-requests.module';
 
@@ -84,10 +83,9 @@ import { UserAccounts } from './user-accounts/enitity/user-account.entity';
     KotGenerationModule,
     RoomServiceModule,
     ChannelManagementModule,
-   
     ServiceRequestsModule,
     UserAccountsModule,
-    AuditLogsModule,
+   
     
   ],
   controllers: [AppController],
