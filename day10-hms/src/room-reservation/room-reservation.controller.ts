@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { RoomReservationService } from './room-reservation.service';
 import { CreateRoomReservationDto } from './DTO/room_reservation.dto';
+
 
 @Controller('room-reservation')
 export class RoomReservationController {
@@ -23,6 +24,24 @@ export class RoomReservationController {
     @Patch(':id/check-out')
     async postCheckOutTime(@Param("id") id: number){
         return await this.roomReservationService.postCheckOutTime(+id)
+    }
+
+    @Patch(':id/status/:status')
+    async cancelRoomReservation(@Param("id") id: number , @Param("status") status: string){
+        return await this.roomReservationService.changeRoomReservationStatus(+id , status)
+    }   
+
+    @Delete(':id')
+    async deleteRoomReservation(@Param("id") id: number){
+        return await this.roomReservationService.deleteRoomReservation(+id)
+    }
+
+    @Patch(':id')
+    async updateRoomReservation(
+        @Param("id") id: number,
+        @Body() updateRoomReservationDto: CreateRoomReservationDto
+    ) {
+        return await this.roomReservationService.updateRoomReservation(+id, updateRoomReservationDto);
     }
     
 

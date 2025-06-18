@@ -20,4 +20,8 @@ export class CreateBookingDetailsDto {
     @IsNumber()
     @IsNotEmpty()
     payment_id: number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    customer_id: number;
 }

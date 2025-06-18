@@ -21,10 +21,10 @@ export class RoomReservation {
   @Column({ type: 'boolean', default: true })
   is_room_available: boolean;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ nullable: true })
   check_in: string;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({  nullable: true })
   check_out_time: string;
 
   @ManyToOne(() => ChannelManagement, channelManagement => channelManagement.room_reservations)
@@ -36,6 +36,6 @@ export class RoomReservation {
    @OneToOne(() => GuestMng, guest => guest.roomReservation)
   guest: GuestMng;
 }
-    
+         
 
 

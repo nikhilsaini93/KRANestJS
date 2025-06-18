@@ -1,11 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomMng } from './enitity/room-mng.entity';
 import { Repository } from 'typeorm';
 import { LostFoundManagement } from 'src/lost-found-management/enitity/lost-found-mng.entity';
 import { CreateRoomMngDto } from './DTO/room-mng.dto';
 import { CreateLostFoundDto } from 'src/lost-found-management/DTO/lost-found-mng.dto';
-import { HousekeepingTask, TaskStatus } from 'src/houseKeeping/enitity/houseKeeping.entity';
+import {
+  HousekeepingTask,
+  TaskStatus,
+} from 'src/houseKeeping/enitity/houseKeeping.entity';
 import { CreateHousekeepingTaskDto } from 'src/houseKeeping/DTO/housekeeping.dto';
 import { error } from 'console';
 
@@ -34,14 +41,67 @@ export class RoomMngService {
     return res;
   }
 
-  async createRoommng(createRoomMngDto: CreateRoomMngDto) {
-    const newRoomMng = this.roomMngRepository.create({
-      room_status_cleaning: createRoomMngDto.room_status_cleaning,
-      housekeeping_task_assign_id: createRoomMngDto.housekeeping_task_assign_id,
-      room_inspection: createRoomMngDto.room_inspection,
-      guest: { id: createRoomMngDto.assigned_guest_id },
-    });
-    return await this.roomMngRepository.save(newRoomMng);
+  // async createRoommng(createRoomMngDto: CreateRoomMngDto) {
+  //   try{
+
+  //   const newRoomMng = this.roomMngRepository.create({
+  //     room_status_cleaning: createRoomMngDto.room_status_cleaning,
+  //     housekeeping_task_assign_id: createRoomMngDto.housekeeping_task_id,
+  //     room_inspection: createRoomMngDto.room_inspection,
+  //     guest: { id: createRoomMngDto.assigned_guest_id },
+  //   });
+  //  const savedRoom = await this.roomMngRepository.save(newRoomMng);
+  //    if (createRoomMngDto.housekeeping_task_id) {
+  //               const housekeepingTask = await this.housekeepingTaskRepository.findOne({
+  //                   where: { Htask_id: createRoomMngDto.housekeeping_task_id}
+  //               });
+  //               if (housekeepingTask) {
+  //                   housekeepingTask.room = savedRoom;
+  //                   await this.housekeepingTaskRepository.save(housekeepingTask);
+  //               }
+  //           }
+
+  //           return savedRoom;
+
+  //          } catch (error) {
+  //           throw new BadRequestException(`Failed to create room: ${error.message}`);
+  //       }
+
+  // }
+  async createRoommng(createRoomDto: CreateRoomMngDto) {
+    try {
+      const room = this.roomMngRepository.create({
+        room_status_cleaning: createRoomDto.room_status_cleaning,
+        room_inspection: createRoomDto.room_inspection,
+        housekeeping_task_assign_id:
+          createRoomDto.housekeeping_task_id ?? undefined,
+        guest: createRoomDto.assigned_guest_id
+          ? { id: createRoomDto.assigned_guest_id }
+          : undefined,
+      });
+
+      const savedRoom = await this.roomMngRepository.save(room);
+
+      // If housekeeping task ID is provided, update the task
+      if (createRoomDto.housekeeping_task_id) {
+        const housekeepingTask = await this.housekeepingTaskRepository.findOne({
+          where: { Htask_id: createRoomDto.housekeeping_task_id },
+        });
+
+        if (housekeepingTask) {
+          housekeepingTask.room = savedRoom;
+          await this.housekeepingTaskRepository.save(housekeepingTask);
+        }
+      }
+
+      return {
+        success: true,
+        message: 'Room created successfully',
+        data: savedRoom,
+      };
+    } catch (error) {
+      throw new BadRequestException(`Failed to create room: ${error.message}`);
+    }
   }
 
   async findallLostFound() {
@@ -68,6 +128,30 @@ export class RoomMngService {
     return await this.lostFoundManagementRepository.save(newLostFound);
   }
 
+  async chnagestatusLostFound(id: number, status: string) {
+    try {
+      const lostFoundItem = await this.lostFoundManagementRepository.findOne({
+        where: { id: id },
+      });
+      if (!lostFoundItem) {
+        throw new NotFoundException(`Lost Found item not found with id ${id}`);
+      }
+
+      lostFoundItem.status = status;
+      const updatedItem =
+        await this.lostFoundManagementRepository.save(lostFoundItem);
+      return {
+        success: true,
+        message: `Lost Found item status successfully updated to ${status}`,
+        item: updatedItem,
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        `Failed to change status: ${error.message}`,
+      );
+    }
+  }
+
   async findAllHousekeepingTasks() {
     return await this.housekeepingTaskRepository.find({
       relations: {
@@ -92,7 +176,7 @@ export class RoomMngService {
   }
 
   async findHosuekeepingTaskbyStaffId(staffId: number) {
-    console.log(staffId)
+    console.log(staffId);
     const res = await this.housekeepingTaskRepository.find({
       where: { assigned_staff_id: staffId },
       relations: {
@@ -100,44 +184,47 @@ export class RoomMngService {
         staff: true,
       },
     });
-    console.log(staffId)
-    console.log(res)
-   if (res.length === 0) {
-  throw new NotFoundException(`Housekeeping task not found with staff id ${staffId}`);
-}
-    return res;
+    console.log(staffId);
+    console.log(res);
+    if (res.length === 0) {
+      throw new NotFoundException(
+        `Housekeeping task not found with staff id ${staffId}`,
+      );
     }
+    return res;
+  }
 
-    async findHouseKeepingTaskByRoomId(roomId: number) {
-         const res = await this.housekeepingTaskRepository.find({
+  async findHouseKeepingTaskByRoomId(roomId: number) {
+    const res = await this.housekeepingTaskRepository.find({
       where: { room_id: roomId },
       relations: {
         room: true,
         staff: true,
       },
     });
-    if(res.length === 0) {
-        throw new NotFoundException(`Housekeeping task not found with Room id ${roomId}`);
+    if (res.length === 0) {
+      throw new NotFoundException(
+        `Housekeeping task not found with Room id ${roomId}`,
+      );
     }
     return res;
-    }
+  }
 
-    async houseKeepingStatusChange(id: number, status: TaskStatus) {
+  async houseKeepingStatusChange(id: number, status: TaskStatus) {
     const task = await this.housekeepingTaskRepository.findOne({
-        where: { Htask_id: id },
-        relations: {
-            room: true,
-            staff: true,
-        },
+      where: { Htask_id: id },
+      relations: {
+        room: true,
+        staff: true,
+      },
     });
 
     if (!task) {
-        throw new NotFoundException(`Housekeeping task not found with id ${id}`);
+      throw new NotFoundException(`Housekeeping task not found with id ${id}`);
     }
- if (status === TaskStatus.COMPLETED) {
-        task.completed_at = new Date();
+    if (status === TaskStatus.COMPLETED) {
+      task.completed_at = new Date();
     }
-   
 
     // Update status
     task.status = status;
@@ -145,23 +232,47 @@ export class RoomMngService {
     const updatedTask = await this.housekeepingTaskRepository.save(task);
 
     return {
-        success: true,
-        message: `Task status successfully updated to ${status}`,
-        task: updatedTask
+      success: true,
+      message: `Task status successfully updated to ${status}`,
+      task: updatedTask,
     };
-}
-    
-
-
-  async createHousekeepingTask(createHousekeepingTaskDto: CreateHousekeepingTaskDto) {
-    const newHousekeepingTask = this.housekeepingTaskRepository.create({
-      room: { room_number: createHousekeepingTaskDto.room_id },
-      task_type: createHousekeepingTaskDto.task_type,
-      status: createHousekeepingTaskDto.status,
-      assigned_staff_id: createHousekeepingTaskDto.assigned_staff_id,
-      scheduled_date: createHousekeepingTaskDto.scheduled_date,
-    });
-    return await this.housekeepingTaskRepository.save(newHousekeepingTask);
   }
 
+  // async createHousekeepingTask(createHousekeepingTaskDto: CreateHousekeepingTaskDto) {
+  //   const newHousekeepingTask = this.housekeepingTaskRepository.create({
+  //     room: { room_number: createHousekeepingTaskDto.room_id },
+  //     task_type: createHousekeepingTaskDto.task_type,
+  //     status: createHousekeepingTaskDto.status,
+  //     assigned_staff_id: createHousekeepingTaskDto.assigned_staff_id,
+  //     scheduled_date: createHousekeepingTaskDto.scheduled_date,
+  //   });
+  //   return await this.housekeepingTaskRepository.save(newHousekeepingTask);
+  // }
+  async createHousekeepingTask(
+    createHousekeepingDto: CreateHousekeepingTaskDto,
+  ) {
+    try {
+      // Check if room exists
+      const room = await this.roomMngRepository.findOne({
+        where: { room_number: createHousekeepingDto.room_id },
+      });
+
+      if (!room) {
+        throw new NotFoundException(
+          `Room ${createHousekeepingDto.room_id} not found`,
+        );
+      }
+
+      const task = this.housekeepingTaskRepository.create({
+        ...createHousekeepingDto,
+        room: room,
+      });
+
+      const savedTask = await this.housekeepingTaskRepository.save(task);
+
+      return savedTask;
+    } catch (error) {
+      throw new BadRequestException(`Failed to create task: ${error.message}`);
+    }
+  }
 }

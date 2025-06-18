@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import {Booking} from "../../bookings/entity/booking.entity"
 import {ChannelManagement} from "../../channel-management/entity/channel-management.entity"
+import { BookingDetails } from 'src/bookingdetails/enitity/bookingdetails.entity';
 
 
 
@@ -52,5 +53,8 @@ export class Customer{
 
   @OneToMany(() => ChannelManagement , channelmng => channelmng.channel_mng_id)
   channelManagement :  ChannelManagement[]
+
+  @OneToOne(() => BookingDetails, bookingDetails => bookingDetails.booking_details_id)
+  bookingDetails: BookingDetails;
 
 }

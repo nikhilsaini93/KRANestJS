@@ -47,7 +47,7 @@ export class HousekeepingTask {
   @Column({ type: 'timestamp', nullable: true })
   completed_at: Date;
 
-  @ManyToOne(() => RoomMng)
+@ManyToOne(() => RoomMng, room => room.housekeepingTasks)
   @JoinColumn({ name: 'room_id' })
   room: RoomMng;
 

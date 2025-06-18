@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { Booking } from '../../bookings/entity/booking.entity';
 import { Payment } from 'src/payment/enitity/payment.entity';
+import { Customer } from 'src/customer_details/entity/customer_details.entitiy';
 
 @Entity('booking_details')
 export class BookingDetails {
@@ -26,6 +27,10 @@ export class BookingDetails {
  @ManyToOne(() => Payment, payment => payment.BookingDetails)
   @JoinColumn({ name: 'payment_id' }) // Specify the column name for the foreign key
   payment: Payment;
+
+  @OneToOne(() => Customer, customer => customer.bookingDetails)
+  @JoinColumn({ name: 'customer_id' }) // Specify the column name for the foreign key
+  customer: Customer;
 
 }    
 

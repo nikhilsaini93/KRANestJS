@@ -6,9 +6,9 @@ export class CreateRoomMngDto {
     @IsIn(['clean', 'dirty', 'in-progress'])
     room_status_cleaning: string;
 
+    @IsOptional()
     @IsNumber()
-    @IsNotEmpty()
-    housekeeping_task_assign_id: number;
+    housekeeping_task_id?: number;
 
     @IsString()
     @IsNotEmpty()

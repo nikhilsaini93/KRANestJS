@@ -11,9 +11,11 @@ export class RoomMng {
 
   @Column()
   room_status_cleaning: string;
-
-  @Column()
-  housekeeping_task_assign_id: number;
+ @Column({ 
+    type: 'integer',  // Change to integer type
+    nullable: true 
+  })
+  housekeeping_task_assign_id: number | null;
 
   @Column()
   room_inspection: string;

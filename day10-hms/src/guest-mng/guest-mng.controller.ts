@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { GuestMngService } from './guest-mng.service';
 import { CreateGuestMngDto } from './DTO/guest-mng.dto';
 import { CreateServiceDto } from 'src/service-requests/DTO/service.dto';
@@ -46,6 +46,11 @@ export class GuestMngController {
     @Post("service")
     async createservice(@Body() createservice: CreateServiceDto){
         return await this.guestMngService.createservice(createservice)
+    }
+
+    @Patch("service/:id/status/:status")
+    async updateservice(@Param("id") id: number , @Param("status") status: string){
+        return await this.guestMngService.changeServiceStatus(+id ,status)
     }
 
 

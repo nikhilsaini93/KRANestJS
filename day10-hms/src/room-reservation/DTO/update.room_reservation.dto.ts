@@ -1,35 +1,37 @@
 import { IsString, IsNotEmpty, IsBoolean, IsNumber, IsOptional, IsDate } from 'class-validator';
-import { Type } from 'class-transformer';
 
-export class CreateRoomReservationDto {
+
+export class UpdateRoomReservationDto {
+    @IsOptional()
     @IsNumber()
     @IsNotEmpty()
-    bookingId: number;
+    bookingId?: number;
 
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
-    booking_type: string;
+    booking_type?: string;
 
+    @IsOptional()
     @IsString()
-    room_reservation_status: string = 'pending';
+    room_reservation_status?: string = 'pending';
 
+    @IsOptional()
     @IsBoolean()
-    is_room_available: boolean = true;
-
-    @IsOptional()
-    check_in?: string;
-
-    @IsOptional()
-    check_out_time?: string;
+    is_room_available?: boolean = true;
+      
 
 
     @IsOptional()
     @IsNumber()
     channelManagementId?: number |undefined
 
+
+    @IsOptional()
     @IsNumber()
     @IsOptional()
     extra_fees?: number = 0;
 
     
 }
+
