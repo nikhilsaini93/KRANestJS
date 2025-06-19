@@ -25,11 +25,11 @@ export class BookingDetails {
   @OneToMany(() => Booking, booking => booking.booking_details)
   bookings: Booking[];
  @ManyToOne(() => Payment, payment => payment.BookingDetails)
-  @JoinColumn({ name: 'payment_id' }) // Specify the column name for the foreign key
+  @JoinColumn({ name: 'payment_id' }) 
   payment: Payment;
 
   @OneToOne(() => Customer, customer => customer.bookingDetails)
-  @JoinColumn({ name: 'customer_id' }) // Specify the column name for the foreign key
+  @JoinColumn({ name: 'customer_id' }) 
   customer: Customer;
 
 }    

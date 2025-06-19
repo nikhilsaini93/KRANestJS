@@ -5,9 +5,10 @@ import { TypeORMError } from 'typeorm';
 import { GuestMng } from './enitity/guest-mng.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServiceRequests } from 'src/service-requests/enitity/service-req.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([GuestMng , ServiceRequests])],
+  imports: [TypeOrmModule.forFeature([GuestMng , ServiceRequests]) , AuthModule],
     controllers: [GuestMngController],
   providers: [GuestMngService]
 })

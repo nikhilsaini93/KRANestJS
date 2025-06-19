@@ -61,15 +61,11 @@ export class BookingsController {
   @UseGuards(jwtAuthGuards, RolesGuard)
   @Roles(Role.ADMIN, Role.MANAGER, Role.STAFF)
   async createBooking(@Body() createBookingDto: CreateBookingDto) {
-    try {
+    
       const newBooking =
         await this.bookingsService.createBooking(createBookingDto);
       return newBooking;
-    } catch (error) {
-      throw new NotAcceptableException(
-        `Failed to create booking: ${error.message}`,
-      );
-    }
+    
   }
 
   @Post('details')

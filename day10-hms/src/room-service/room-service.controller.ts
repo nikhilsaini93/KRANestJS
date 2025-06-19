@@ -1,15 +1,21 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { RoomServiceService } from './room-service.service';
 import { CreateRoomServiceDto } from './DTO/room-service.dto';
 import { get } from 'http';
 import { CreateMenuDto } from 'src/menu/DTO/menu.dto';
 import { CreateKtoDto } from 'src/kot-generation/DTO/kot.dto';
+import { RolesGuard } from 'src/auth/guards/role.guards';
+import { jwtAuthGuards } from 'src/auth/guards/auth.guards';
+import { Role } from 'src/user-accounts/enitity/user-account.entity';
+import { Roles } from 'src/auth/Decorators/roles.decorators';
 
 @Controller('room-service')
+
 export class RoomServiceController {
     constructor(private readonly roomServiceService: RoomServiceService) {}
 
     @Get()
+
     async findAllRoomservice() {
         return this.roomServiceService.findAllRoomservice();
     }
@@ -41,6 +47,7 @@ export class RoomServiceController {
     }
 
     @Post()
+ 
     async createRoomService(@Body() createRoomServiceDto: CreateRoomServiceDto){
         return this.roomServiceService.createRoomService(createRoomServiceDto);
     }

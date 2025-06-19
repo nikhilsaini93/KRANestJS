@@ -213,7 +213,7 @@ export class BookingsService {
 
         if (payment?.status !== 'success') {
           throw new NotAcceptableException(
-            `Payment with ID ${createBookingDetailsDto.payment_id} is not successfull that why boking details cannot be created`,
+            `Payment with ID ${createBookingDetailsDto.payment_id} is not successfull that's why boking details cannot be created`,
           );
         }
       }
@@ -231,20 +231,16 @@ export class BookingsService {
         bookingDetails.payment = payment;
       }
 
-      const savedBookingDetails =
+   
         await this.bookingDetailsRepository.save(bookingDetails);
 
-      // Fetch complete booking details with relations
-      const completeBookingDetails =
-        await this.bookingDetailsRepository.findOne({
-          where: { booking_details_id: savedBookingDetails.booking_details_id },
-          relations: ['payment', 'customer'],
-        });
+      
 
       return {
         success: true,
         message: 'Booking details created successfully',
-        data: completeBookingDetails,
+        
+    
       };
     } catch (error) {
       throw new NotAcceptableException(
@@ -254,46 +250,58 @@ export class BookingsService {
   }
 
   async findRoomReservationByBookingId(bookingId: number) {
-    const roomReservations = await this.roomReservationRepository.find({
-      where: { booking: { booking_id: bookingId } },
-      relations: ['booking'],
-    });
+    try {
+      const roomReservations = await this.roomReservationRepository.find({
+        where: { booking: { booking_id: bookingId } },
+        relations: ['booking'],
+      });
 
-    if (!roomReservations || roomReservations.length === 0) {
-      throw new NotFoundException(
-        `No room reservations found for booking ID ${bookingId}`,
+      if (!roomReservations || roomReservations.length === 0) {
+        throw new NotFoundException(
+          `No room reservations found for booking ID ${bookingId}`,
+        );
+      }
+
+      return roomReservations;
+    } catch (error) {
+      throw new NotAcceptableException(
+        `Failed to find room reservation by booking ID: ${error.message}`,
       );
     }
-
-    return roomReservations;
   }
 
   async chnangeRoomReservationStatusUseingBookingId(
     bookingId: number,
     status: string,
   ) {
-    const roomReservations = await this.roomReservationRepository.find({
-      where: { booking: { booking_id: bookingId } },
-      relations: ['booking'],
-    });
+    try {
+      const roomReservations = await this.roomReservationRepository.find({
+        where: { booking: { booking_id: bookingId } },
+        relations: ['booking'],
+      });
 
-    if (!roomReservations || roomReservations.length === 0) {
-      throw new NotFoundException(
-        `No room reservations found for booking ID ${bookingId}`,
+      if (!roomReservations || roomReservations.length === 0) {
+        throw new NotFoundException(
+          `No room reservations found for booking ID ${bookingId}`,
+        );
+      }
+
+      // Update the status of each room reservation
+      for (const reservation of roomReservations) {
+        reservation.room_reservation_status = status;
+        await this.roomReservationRepository.save(reservation);
+      }
+
+      return {
+        success: true,
+        message: `Room reservation status updated to ${status} for booking ID ${bookingId}`,
+        data: roomReservations,
+      };
+    } catch (error) {
+      throw new NotAcceptableException(
+        `Failed to change room reservation status: ${error.message}`,
       );
     }
-
-    // Update the status of each room reservation
-    for (const reservation of roomReservations) {
-      reservation.room_reservation_status = status;
-      await this.roomReservationRepository.save(reservation);
-    }
-
-    return {
-      success: true,
-      message: `Room reservation status updated to ${status} for booking ID ${bookingId}`,
-      data: roomReservations,
-    };
   }
 
   async updateBooking(bookingId: number, updateBookingDto: UpdateBookingDto) {
@@ -317,12 +325,17 @@ export class BookingsService {
   }
 
   async deleteBooking(bookingId: number) {
-    const booking = await this.findBookingsbyBookingId(bookingId);
-    if (!booking) {
-      throw new NotFoundException(`Booking not found with id ${bookingId}`);
+    try {
+      const booking = await this.findBookingsbyBookingId(bookingId);
+      if (!booking) {
+        throw new NotFoundException(`Booking not found with id ${bookingId}`);
+      }
+      await this.bookingRepository.remove(booking);
+      return { message: `Booking with id ${bookingId} deleted successfully` };
+    } catch (error) {
+      throw new NotAcceptableException(
+        `Failed to delete booking: ${error.message}`,
+      );
     }
-    await this.bookingRepository.remove(booking);
-    return { message: `Booking with id ${bookingId} deleted successfully` };
   }
-
 }

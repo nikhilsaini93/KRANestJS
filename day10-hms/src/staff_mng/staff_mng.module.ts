@@ -6,9 +6,10 @@ import { StaffMng } from './enitity/stff-mng.entity';
 import { StaffAttendance } from 'src/staff-attendance/enitity/staff-attendence.entity';
 import { StaffShifts } from 'src/staff-shifts/enitity/staff-shifts.entity';
 import { TaskMng } from 'src/task-mng/enitity/task-mng.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports : [TypeOrmModule.forFeature([StaffMng , StaffAttendance , StaffShifts, TaskMng])],
+  imports : [TypeOrmModule.forFeature([StaffMng , StaffAttendance , StaffShifts, TaskMng]) , AuthModule],
   exports: [StaffMngService],
   controllers: [StaffMngController],
   providers: [StaffMngService]

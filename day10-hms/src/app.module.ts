@@ -4,22 +4,15 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UserAccountsModule } from './user-accounts/user-accounts.module';
-import { ServiceRequestsModule } from './service-requests/service-requests.module';
 
 import { ChannelManagementModule } from './channel-management/channel-management.module';
 import { RoomServiceModule } from './room-service/room-service.module';
-import { KotGenerationModule } from './kot-generation/kot-generation.module';
-import { MenuModule } from './menu/menu.module';
+
 import { InventoryMngModule } from './inventory-mng/inventory-mng.module';
-import { PurchaseOrderMngModule } from './purchase-order-mng/purchase-order-mng.module';
-import { SupplierModule } from './supplier/supplier.module';
 import { GuestMngModule } from './guest-mng/guest-mng.module';
 import { RoomReservationModule } from './room-reservation/room-reservation.module';
 import { FeedbackModule } from './feedback/feedback.module';
 import { PaymentModule } from './payment/payment.module';
-import { TaskMngModule } from './task-mng/task-mng.module';
-import { StaffShiftsModule } from './staff-shifts/staff-shifts.module';
-import { StaffAttendanceModule } from './staff-attendance/staff-attendance.module';
 import { CustomerDetailsModule } from './customer_details/customer_details.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { StaffMngModule } from './staff_mng/staff_mng.module';
@@ -57,11 +50,35 @@ import { UserAccounts } from './user-accounts/enitity/user-account.entity';
       port: 5432,
       username: 'postgres',
       password: 'admin',
-      
-       database: 'HMSS',
-       entities : [Booking , Customer , ChannelManagement , BookingDetails , RoomReservation , Payment , GuestMng , InventoryMng , PurchaseOrderMng , Supplier, Feedback ,AuditLogs ,KotGeneration , LostFoundManagement , Menu , RoomMng , RoomService , ServiceRequests , StaffAttendance , StaffMng , StaffShifts , TaskMng , UserAccounts ],
-       autoLoadEntities: true,
-       
+
+      database: 'HMSS',
+      entities: [
+        Booking,
+        Customer,
+        ChannelManagement,
+        BookingDetails,
+        RoomReservation,
+        Payment,
+        GuestMng,
+        InventoryMng,
+        PurchaseOrderMng,
+        Supplier,
+        Feedback,
+        AuditLogs,
+        KotGeneration,
+        LostFoundManagement,
+        Menu,
+        RoomMng,
+        RoomService,
+        ServiceRequests,
+        StaffAttendance,
+        StaffMng,
+        StaffShifts,
+        TaskMng,
+        UserAccounts,
+      ],
+      autoLoadEntities: true,
+
       synchronize: true,
     }),
     AuthModule,
@@ -69,24 +86,14 @@ import { UserAccounts } from './user-accounts/enitity/user-account.entity';
     BookingsModule,
     StaffMngModule,
     RoomMngModule,
-    StaffAttendanceModule,
-    StaffShiftsModule,
-    TaskMngModule,
     PaymentModule,
     FeedbackModule,
-    RoomReservationModule,  
+    RoomReservationModule,
     GuestMngModule,
-    SupplierModule,
-    PurchaseOrderMngModule,
     InventoryMngModule,
-    MenuModule,
-    KotGenerationModule,
     RoomServiceModule,
     ChannelManagementModule,
-    ServiceRequestsModule,
     UserAccountsModule,
-   
-    
   ],
   controllers: [AppController],
   providers: [AppService],

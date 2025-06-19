@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoomService } from './enitity/room-service.entity';
 import { Menu } from 'src/menu/enitity/menu.entity';
 import { KotGeneration } from 'src/kot-generation/enitity/kot-gen.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([RoomService , Menu , KotGeneration])],
+  imports: [TypeOrmModule.forFeature([RoomService , Menu , KotGeneration]) , AuthModule],
   controllers: [RoomServiceController],
   providers: [RoomServiceService]
 })

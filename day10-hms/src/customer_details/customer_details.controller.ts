@@ -52,6 +52,8 @@ async deleteCustomer(@Param('id') id: number) {
 }
 
 @Patch(":id/status/:status")
+@UseGuards(jwtAuthGuards, RolesGuard)
+@Roles(Role.ADMIN, Role.MANAGER)
 @HttpCode(HttpStatus.OK)
 async updateCustomerStatus(@Param('id') id: number, @Param('status') status: string) {
     return await this.customerDetailsService.changeCustomerStatus(+id, status);

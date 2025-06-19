@@ -32,10 +32,19 @@ export class PaymentService {
         return res
     }
 
-    async statuschange(id : number){
+    async updatePaymentStatus(id : number , status: string) {
         const payment = await this.findById(id)
-        payment.status = 'paid'
+        payment.status = status
         return await this.paymentRepository.save(payment)
+    }
+
+
+    async checkPaymentStatus(id: number) {
+        const payment = await this.findById(id);
+        if (!payment) {
+            throw new NotFoundException(`Payment with id ${id} not found`);
+        }
+        return payment.status;
     }
 
     

@@ -20,6 +20,9 @@ export class RoomMng {
   @Column()
   room_inspection: string;
 
+  @Column({ type: 'boolean', default: true })
+  is_Occupied: boolean;
+
   @ManyToOne(() => GuestMng)
   @JoinColumn({ name: 'assigned_guest_id' })
   guest: GuestMng;

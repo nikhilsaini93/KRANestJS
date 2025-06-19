@@ -161,19 +161,13 @@ export class UserAccountsService {
         staff_id: createUserAccountDto.staff_id,
       },
     });
-    const savedUser = await this.userAccountsRepository.save(newUser);
+   
 
     // Create response object with role-specific message
     const response = {
       success: true,
       message: this.getCreationMessage(role, currentUser.role),
-      user: {
-        id: savedUser.id,
-        email: savedUser.email,
-        role: savedUser.role,
-        staff_id: savedUser.staff?.staff_id,
-        created_at: savedUser.created_at,
-      },
+      
     };
 
     return response;

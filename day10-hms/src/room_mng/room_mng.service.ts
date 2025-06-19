@@ -15,6 +15,7 @@ import {
 } from 'src/houseKeeping/enitity/houseKeeping.entity';
 import { CreateHousekeepingTaskDto } from 'src/houseKeeping/DTO/housekeeping.dto';
 import { error } from 'console';
+import { UpdateRoomMngDto } from './DTO/updatroommng.dto';
 
 @Injectable()
 export class RoomMngService {
@@ -103,6 +104,40 @@ export class RoomMngService {
       throw new BadRequestException(`Failed to create room: ${error.message}`);
     }
   }
+
+  async updateRoommng(
+    id: number,
+    updateRoomDto: UpdateRoomMngDto,
+  ) {
+    const room = await this.roomMngRepository.findOne({
+      where: { room_number: id },
+    });
+
+    if (!room) {
+      throw new NotFoundException(`Room not found with id ${id}`);
+    }
+    // Update room properties
+    const updateRoom = await this.roomMngRepository.merge(room, {
+      room_status_cleaning: updateRoomDto.room_status_cleaning,
+      housekeeping_task_assign_id:
+        updateRoomDto.housekeeping_task_assign_id ?? undefined,
+      room_inspection: updateRoomDto.room_inspection,
+      guest: updateRoomDto.assigned_guest_id
+        ? { id: updateRoomDto.assigned_guest_id }
+        : undefined,
+    });
+    try {
+      const updatedRoom = await this.roomMngRepository.save(updateRoom);
+      return {
+        success: true,
+        message: 'Room updated successfully',
+        data: updatedRoom,
+      };
+    } catch (error) {
+      throw new BadRequestException(`Failed to update room: ${error.message}`);
+    }
+  }
+
 
   async findallLostFound() {
     return await this.lostFoundManagementRepository.find();

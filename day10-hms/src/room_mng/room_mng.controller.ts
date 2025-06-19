@@ -1,10 +1,26 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { RoomMngService } from './room_mng.service';
 import { CreateRoomMngDto } from './DTO/room-mng.dto';
 import { CreateLostFoundDto } from 'src/lost-found-management/DTO/lost-found-mng.dto';
 import { CreateHousekeepingTaskDto } from 'src/houseKeeping/DTO/housekeeping.dto';
+import { RolesGuard } from 'src/auth/guards/role.guards';
+import { jwtAuthGuards } from 'src/auth/guards/auth.guards';
+import { Roles } from 'src/auth/Decorators/roles.decorators';
+import { Role } from 'src/user-accounts/enitity/user-account.entity';
+import { UpdateBookingDto } from 'src/bookings/DTO/updatebooking.dto';
+import { UpdateRoomMngDto } from './DTO/updatroommng.dto';
 
 @Controller('room-mng')
+@UseGuards(jwtAuthGuards, RolesGuard)
+@Roles(Role.ADMIN, Role.MANAGER, Role.STAFF)
 export class RoomMngController {
   constructor(private readonly roomMngService: RoomMngService) {}
 
@@ -19,6 +35,7 @@ export class RoomMngController {
   }
 
   @Get('housekeeping-tasks')
+  
   async findAllHousekeepingTasks() {
     return await this.roomMngService.findAllHousekeepingTasks();
   }
@@ -34,6 +51,7 @@ export class RoomMngController {
   }
 
   @Get('housekeeping-tasks/room/:id')
+
   async findHouseKeepingTaskByRoomId(@Param('id') id: number) {
     return await this.roomMngService.findHouseKeepingTaskByRoomId(+id);
   }
@@ -49,6 +67,8 @@ export class RoomMngController {
   }
 
   @Post()
+      @UseGuards(jwtAuthGuards, RolesGuard)
+    @Roles(Role.ADMIN, Role.MANAGER)
   async createRoomMng(@Body() createRoomMngDto: CreateRoomMngDto) {
     return await this.roomMngService.createRoommng(createRoomMngDto);
   }
@@ -59,6 +79,8 @@ export class RoomMngController {
   }
 
   @Patch('lost-found/:id/status/:status')
+      @UseGuards(jwtAuthGuards, RolesGuard)
+    @Roles(Role.ADMIN, Role.MANAGER , Role.STAFF)
   async updateLostFoundStatus(
     @Param('id') id: number,
     @Param('status') status: string,
@@ -67,6 +89,8 @@ export class RoomMngController {
   }
 
   @Post('housekeeping-tasks')
+      @UseGuards(jwtAuthGuards, RolesGuard)
+    @Roles(Role.ADMIN, Role.MANAGER )
   async createHousekeepingTask(
     @Body() createHousekeepingTaskDto: CreateHousekeepingTaskDto,
   ) {
@@ -74,4 +98,16 @@ export class RoomMngController {
       createHousekeepingTaskDto,
     );
   }
+
+  @Patch(':id')
+      @UseGuards(jwtAuthGuards, RolesGuard)
+    @Roles(Role.ADMIN, Role.MANAGER)
+    async updateRoomMng(
+    @Param('id') id: number,
+    @Body() updateRoomMngDto: UpdateRoomMngDto,
+    ) {
+    return await this.roomMngService.updateRoommng(+id, updateRoomMngDto);
+  }
+
+
 }

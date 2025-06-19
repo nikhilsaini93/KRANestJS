@@ -1,5 +1,3 @@
-// 10. INVENTORY & SUPPLY
-// supplier.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { PurchaseOrderMng } from '../../purchase-order-mng/enitity/purchase-order.entity';
 

@@ -49,6 +49,7 @@ async createPost(createPostDto: CreatePostDto, author: User): Promise<Post> {
   // Delete a post
   async removePost(id: number): Promise<{ message: string }> {
     const post = await this.findById(id);
+    
     await this.postRepository.remove(post);
     return { message: `Post with id ${id} removed successfully` };
   }

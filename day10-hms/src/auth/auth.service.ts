@@ -49,7 +49,7 @@ export class AuthService {
 
       return {
         message: 'Login successful',
-        user: result,
+
         ...token,
       };
     } catch (error) {
