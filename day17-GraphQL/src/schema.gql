@@ -1,0 +1,43 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Book {
+  id: Int!
+  title: String!
+  author: String!
+  price: Int!
+  description: String
+}
+
+type Post {
+  id: Float!
+  title: String!
+  content: String!
+  authorId: Float
+}
+
+type Query {
+  books: [Book!]!
+  posts: [Post!]!
+  postByID(post_id: Float!): Post!
+}
+
+type Mutation {
+  postByAuthor(postArgs: PostArgs!): String!
+  updatePost(updatePostInput: UpdatePostInput!): String!
+  deletePost(post_id: Float!): String!
+}
+
+input PostArgs {
+  title: String!
+  content: String!
+  authorId: Float
+}
+
+input UpdatePostInput {
+  id: Int!
+  title: String
+  content: String
+  authorId: Float
+}
