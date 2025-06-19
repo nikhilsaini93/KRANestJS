@@ -11,7 +11,7 @@ type Book {
 }
 
 type Post {
-  id: Float!
+  post_id: Float!
   title: String!
   content: String!
   authorId: Float

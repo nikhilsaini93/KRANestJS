@@ -30,7 +30,7 @@ export interface Book {
 }
 
 export interface Post {
-    id: number;
+    post_id: number;
     title: string;
     content: string;
     authorId?: Nullable<number>;

@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './Entity/post.entity';
 import { PostArgs } from './args/post.args';
 import { UpdatePostInput } from './args/updatpost.args';
+
 
 @Injectable()
 export class PostsService {
@@ -16,7 +17,13 @@ export class PostsService {
     }
 
     async findbyId(post_id: number){
-        return await this.postRepository.findOneBy({ post_id });
+        const res = await this.postRepository.findOneBy({ post_id });
+        if(!res) {
+            throw new NotFoundException('Post not found');
+        }
+        return res;
+
+
     }
 
     async create(postargs : PostArgs){
@@ -41,6 +48,7 @@ export class PostsService {
         await this.postRepository.remove(post);
         return `post with id ${post_id} deleted successfully.`;
     }
+
 
 
 

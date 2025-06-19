@@ -44,6 +44,8 @@ async updatePost(
     @Mutation(returns => String, { name: 'deletePost' })
     async deletePost(@Args({ name: 'post_id', type: () => Number }) post_id: number){
         return this.postService.delete(post_id);
+
+        
     }
 
 
