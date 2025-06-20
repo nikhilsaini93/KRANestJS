@@ -4,15 +4,16 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule,{
-    transport: Transport.TCP,
+    transport: Transport.GRPC,
     options: {
-
-      port: 4002,
+      package: 'user',
+      protoPath: "../proto/users.proto",
+      url: '0.0.0.0:5001',
     },
 
   });
   await app.listen();
-  console.log('user Service is running on port 4003');
+  console.log('user Service is running on grpc ');
 
 }
 bootstrap();

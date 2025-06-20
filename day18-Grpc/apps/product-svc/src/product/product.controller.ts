@@ -9,6 +9,6 @@ export class ProductController {
       id: data.id,
       name: `Product ${data.id}`,
       description: `This is a dummy product with id ${data.id}`,
-    };
+     };
   }
-}
+}   
