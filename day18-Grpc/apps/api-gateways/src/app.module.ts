@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-// import { ProductsController } from './products/products.controller';
-// import { ProductsController } from '../../api-gateways/src/products/products.controller';
+
+import { ProductsController } from '../../api-gateways/src/products/products.controller';
 // import { UserApiController } from './users/users.controller';
 import { join } from 'path';
+import { UserApiController } from './user/user.controller';
 
 @Module({
   imports: [ClientsModule.register([
@@ -15,6 +16,7 @@ import { join } from 'path';
       options: {
         package: 'product',
         protoPath: "../proto/product.proto",
+        url: '0.0.0.0:3001',
       }
     },
       {
@@ -29,7 +31,7 @@ import { join } from 'path';
     
   ] 
   )],  
-  controllers: [AppController,],
+  controllers: [AppController,ProductsController, UserApiController],
   providers: [AppService],
 })
 export class AppModule {}

@@ -10,7 +10,7 @@ async function bootstrap() {
     options: {
       package: 'product',
       protoPath: "../proto/product.proto",
-      // url: '0.0.0.0:3000',
+      url: '0.0.0.0:3001',
     },
   
  

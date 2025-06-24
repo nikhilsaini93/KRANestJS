@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package blog;
+
+service BlogService {
+  rpc CreatePost (CreatePostDto) returns (Post);
+  rpc UpdatePost (UpdatePostDto) returns (Post);
+  rpc DeletePost (Id) returns (Empty);
+  rpc GetPostById (Id) returns (Post);
+  rpc GetAllPosts (Empty) returns (PostList);
+}
+
+message Post {
+  int32 id = 1;
+  string title = 2;
+  string content = 3;
+  int32 authorId = 4;
+}
+
+message CreatePostDto {
+  string title = 1;
+  string content = 2;
+  int32 authorId = 3;
+}
+
+message UpdatePostDto {
+  int32 id = 1;
+  string title = 2;
+  string content = 3;
+}
+
+message Id {
+  int32 id = 1;
+}
+
+message Empty {}
+
+message PostList {
+  repeated Post posts = 1;
+}
+

@@ -3,7 +3,7 @@ import { GrpcMethod } from '@nestjs/microservices';
 
 @Controller()
 export class ProductController {
-  @GrpcMethod('ProductService', 'getProduct')
+ @GrpcMethod('ProductService', 'GetProduct')
   getProduct(data: { id: string }) {
     return {
       id: data.id,
