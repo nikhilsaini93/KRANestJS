@@ -21,4 +21,9 @@ export class NotificationSvcController {
   OrderPlaced(@Payload() data : any){
     console.log("[Notification Recived in Notification service] order created email sending....." , data)
 }
+
+  @MessagePattern("login")
+  login(@Payload() data : any){
+    console.log("[Notification Recived in Notification service] login succefully sending....." , data)
+  }
 }
