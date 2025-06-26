@@ -18,8 +18,8 @@ export class BlogsController {
   }
 
   @Get()
-    @UseGuards(jwtAuthGuards, RolesGuard)
-  @Roles(Role.ADMIN)
+  //   @UseGuards(jwtAuthGuards, RolesGuard)
+  // @Roles(Role.ADMIN)
   findAll() {
     return this.blogsService.findAll();
   }

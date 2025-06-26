@@ -23,7 +23,18 @@ import { JwtStrategy } from './strategy/jwt.strategy';
             package : AUTH_PACKAGE_NAME,
             url: "0.0.0.0:5003"
   }
-}])],
+}])
+,
+ClientsModule.register([{
+    name: "KAFKA_SERVICE",
+    transport: Transport.KAFKA,
+    options: {
+      client:{
+        brokers : ['localhost:9092'],
+      },
+    }
+  }])
+],
   controllers: [AuthApiController],
   providers: [AuthApiService ,JwtStrategy ],
 })
