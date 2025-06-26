@@ -14,5 +14,6 @@ async function bootstrap() {
     }
   });
   await app.listen();
+  console.log("Blog Service run on url -> 5001")  
 }
 bootstrap();

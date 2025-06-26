@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/api-gateway/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/api-gateway",
+  "projects": {
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
+    },
+    "notification-svc": {
+      "type": "application",
+      "root": "apps/notification-svc",
+      "entryFile": "main",
+      "sourceRoot": "apps/notification-svc/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/notification-svc/tsconfig.app.json"
+      }
+    },
+    "order-svc": {
+      "type": "application",
+      "root": "apps/order-svc",
+      "entryFile": "main",
+      "sourceRoot": "apps/order-svc/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/order-svc/tsconfig.app.json"
+      }
+    },
+    "payment-svc": {
+      "type": "application",
+      "root": "apps/payment-svc",
+      "entryFile": "main",
+      "sourceRoot": "apps/payment-svc/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/payment-svc/tsconfig.app.json"
+      }
+    }
+  }
+}
