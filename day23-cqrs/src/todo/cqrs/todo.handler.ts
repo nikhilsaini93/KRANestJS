@@ -16,7 +16,8 @@ export class CreateTodoHandler implements ICommandHandler<CreateTodoCommand> {
     @InjectRepository(Todo) private readonly todorepo: Repository<Todo>,
   ) {}
   async execute(command: CreateTodoCommand): Promise<Todo> {
-    return this.todorepo.save(this.todorepo.create({ title: command.title }));
+        const task = this.todorepo.create({ title: command.title });
+    return await this.todorepo.save(task);
   }
 }
 
@@ -39,7 +40,11 @@ export class DeleteTodoHandler implements ICommandHandler<DeleteTodoCommand> {
   constructor(
     @InjectRepository(Todo) private readonly todorepo: Repository<Todo>,
   ) {}
-  async execute(command: DeleteTodoCommand): Promise<void> {
-    await this.todorepo.delete(command.id);
+  async execute(command: DeleteTodoCommand) {
+    const res = await this.todorepo.delete(command.id);
+    if (res.affected === 0) throw new NotFoundException('Todo not found');
+    return {
+      message: 'Todo deleted successfully',
+    }
   }
 }

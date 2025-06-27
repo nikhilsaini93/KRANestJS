@@ -3,6 +3,7 @@ import { GetTodosQuery , GetTodosById } from "./todo.queries";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Todo } from "../todo.entity";
 import { Repository } from "typeorm";
+import { NotFoundException } from "@nestjs/common";
 
 
 
@@ -18,7 +19,11 @@ export class GetTodosHandler implements IQueryHandler<GetTodosQuery> {
 export class GetTodosHandlerById implements IQueryHandler<GetTodosById>  {
   constructor(@InjectRepository(Todo) private readonly todorepo: Repository<Todo>) {}
 
-  async execute(query: GetTodosById): Promise<Todo | null> {
-    return this.todorepo.findOneBy({ id : query.id });
+  async execute(query: GetTodosById){
+   const res =  await this.todorepo.findOneBy({ id : query.id });
+   if(!res) {
+    throw new NotFoundException('Todo not found');
+   }
+   return res;
+   }
   }
-}
