@@ -3,6 +3,7 @@ import {
   CreateTodoCommand,
   DeleteTodoCommand,
   LogTodoCreationCommand,
+  LogTodoUpdateCommand,
   UpdateTodoCommand,
 } from './todo.commond';
 
@@ -86,6 +87,17 @@ export class LogTodoHandler implements ICommandHandler<LogTodoCreationCommand> {
   async execute(command: LogTodoCreationCommand) {
     console.log(`📝 TODO Created: [${command.id}] ${command.title}`);
   }
+}
+
+
+  @CommandHandler(LogTodoUpdateCommand)
+export class LogUpdateTodoHandler implements ICommandHandler<LogTodoUpdateCommand> {
+  async execute(command: LogTodoUpdateCommand) {
+    console.log(`📝 TODO Updated: [${command.id}] ${command.title}  ${command.done} `);
+  }
+
+  
+
 }
 
 

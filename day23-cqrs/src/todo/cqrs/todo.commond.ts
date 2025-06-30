@@ -20,6 +20,11 @@ export class LogTodoCreationCommand {
   constructor(public readonly id: number, public readonly title: string) {}
 }
 
+export class LogTodoUpdateCommand {
+  constructor(public readonly id: number, public readonly title: string , public readonly done: boolean) {}
+}
+
+
 
 
 

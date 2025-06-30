@@ -4,7 +4,7 @@ import { Todo } from './todo.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
-import { CreateTodoHandler, DeleteTodoHandler, LogTodoHandler, UpdateTodoHandler } from './cqrs/todo.handler';
+import { CreateTodoHandler, DeleteTodoHandler, LogTodoHandler, LogUpdateTodoHandler, UpdateTodoHandler } from './cqrs/todo.handler';
 import { GetTodosHandler, GetTodosHandlerById } from './cqrs/query.handler';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TodoSagas } from './sagas/todo.saga';
@@ -19,7 +19,8 @@ import { TodoSagas } from './sagas/todo.saga';
     GetTodosHandler,
     GetTodosHandlerById,
     TodoSagas,
-    LogTodoHandler
+    LogTodoHandler,
+    LogUpdateTodoHandler
     
 
   ],
