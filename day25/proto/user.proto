@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package user;
+
+service UserService {
+  rpc CreateUser (CreateUserDto) returns (User);
+  rpc FindUserById (Id) returns (User);
+  rpc GetAllUsers (Empty) returns (UserList);
+  rpc UpdateUser (UpdateUserDto) returns (User);
+  rpc UpdateUserRole (UpdateUserRoleDto) returns (User);
+  rpc DeleteUser (Id) returns (Empty);
+  rpc FindUserByEmail (FindUserByEmailRequest) returns (UserResponse);
+}
+
+message User {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string password = 4; // ✅ Important
+  string role = 5;
+}
+
+message CreateUserDto {
+  string name = 1;
+  string email = 2;
+  string password = 3; // ✅ Important
+  string role = 4;
+}
+
+message UpdateUserDto {
+  int32 id = 1;
+  string name = 2;
+  string role = 3;
+}
+
+message UpdateUserRoleDto {
+  int32 id = 1;
+  string role = 2;
+}
+
+message Id {
+  int32 id = 1;
+}
+
+message Empty {}
+
+message UserList {
+  repeated User users = 1;
+}
+
+message FindUserByEmailRequest {
+  string email = 1;
+}
+
+message UserResponse {
+  User user = 1;
+}
