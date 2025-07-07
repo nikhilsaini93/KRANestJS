@@ -60,7 +60,7 @@ export class AppController {
   }
   @Get('axios')
   async getAxiosExample() {
-    const url = 'https://jsonplaceholder.typicode.com/posts/1';
+    const url = 'https://jsonplaceholder.typicode.com/posts';
 
     const response = await lastValueFrom(this.httpService.get(url));
     console.log(response.data);
