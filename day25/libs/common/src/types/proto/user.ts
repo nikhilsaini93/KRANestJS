@@ -5,6 +5,7 @@
 // source: proto/user.proto
 
 /* eslint-disable */
+import { Userr } from "@app/common/Entity";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
@@ -58,7 +59,7 @@ export interface UserResponse {
 export const USER_PACKAGE_NAME = "user";
 
 export interface UserServiceClient {
-  createUser(request: CreateUserDto): Observable<User>;
+  createUser(request: CreateUserDto , user: Userr): Observable<User>;
 
   findUserById(request: Id): Observable<User>;
 
@@ -74,7 +75,7 @@ export interface UserServiceClient {
 }
 
 export interface UserServiceController {
-  createUser(request: CreateUserDto): Promise<User> | Observable<User> | User;
+  createUser(request: CreateUserDto , user: Userr): Promise<User> | Observable<User> | User;
 
   findUserById(request: Id): Promise<User> | Observable<User> | User;
 

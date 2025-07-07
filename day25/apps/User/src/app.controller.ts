@@ -1,39 +1,63 @@
-import { Controller, UseGuards } from '@nestjs/common';
+import { Controller, Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 
 import { UpdateUserDto, UpdateUserRoleDto } from 'types/proto/user';
 import { AppService } from './app.service';
-import { CreateUserDto, currentUser, JwtAuthGuard, Role, Roles, Userr, UserServiceControllerMethods } from '@app/common';
-import { RolesGuard } from '@app/common/guards/role.guards';
+import { CreateUserDto, currentUser, Userr, UserServiceControllerMethods ,AuthenticationServiceClient, AUTHENTICATION_SERVICE_NAME} from '@app/common';
+import { firstValueFrom } from 'rxjs';
+import { ClientGrpc } from '@nestjs/microservices';
+
 
 
 @Controller()
 @UserServiceControllerMethods()
-export class AppController {
-  constructor(private readonly usersService: AppService) {
-   
+export class AppController implements OnModuleInit {
+  private authService: AuthenticationServiceClient;
+  constructor(private readonly usersService: AppService , 
+    @Inject(AUTHENTICATION_SERVICE_NAME) private readonly client: ClientGrpc,
+  ) {}
+
+   onModuleInit() {
+    this.authService = this.client.getService<AuthenticationServiceClient>(AUTHENTICATION_SERVICE_NAME);
   }
 
-
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.USER)
-  // createUser( createUserDto: CreateUserDto , @currentUser() user : Userr) {
-  //   return this.usersService.createUser(createUserDto , user);
-  // }
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(Role.ADMIN, Role.SUPER_ADMIN)
-createUser(req: { token: string; data: CreateUserDto }, @currentUser() user: Userr) {
-  return this.usersService.createUser(req.data, user);
+  
+  
+private async validateAndGetUser(token: string): Promise<Userr> {
+  console.log('Validating token:', token);
+  const result = await firstValueFrom(this.authService.validateToken({ token }));
+  console.log('Validation result:', result);
+  if (!result?.isValid) throw new Error('Unauthorized');
+  // Build a Userr object with all required fields
+  return {
+    id: result.userId,
+    // email: result.email,
+    role: result.role,
+    // name: result.name ?? '', // add name if available, or empty string
+    password: '', 
+  } as Userr;
 }
 
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+//   async createUser(req: { token: string; data: CreateUserDto }) {
+//   console.log('Received request to create user:',req.data);
+//   const currentUser = await this.validateAndGetUser(req.token); // validate token and get user info
+//   return this.usersService.createUser(req.data, currentUser);
+// }
+
+
+async createUser(createUserDto: CreateUserDto, user: Userr) {
+  console.log('Creating user with data:', createUserDto);
+  console.log('Current user:', user);
+  return this.usersService.createUser(createUserDto, user);
+
+}
+
   getAllUsers() {
     return this.usersService.getAllUsers();
   }
 
-  // @UseGuards(jwtAuthGuards, RolesGuard)
-  // @Roles(Role.ADMIN, Role.SUPER_ADMIN,)    
+
+    
   findUserById(Proid: { id: number }) {
     return this.usersService.findUserById(Proid.id);
   }
@@ -44,22 +68,19 @@ createUser(req: { token: string; data: CreateUserDto }, @currentUser() user: Use
     return this.usersService.findUserByEmail(data);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)  
+
   updateUser(updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser( updateUserDto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
   deleteUser(DeleteId: { id: number }) {
     return this.usersService.deleteUser(DeleteId.id);
   }
 
   
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.SUPER_ADMIN)
+
   updateUserRole(data: UpdateUserRoleDto) {
     return this.usersService.updateUserRole(data);
   }
 }
+

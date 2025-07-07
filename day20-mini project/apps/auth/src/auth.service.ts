@@ -34,6 +34,7 @@ export class AuthService implements OnModuleInit {
     }
   
     const token = this.generateToken(user);
+   
 
     // Remove password from response
     const { password, ...result } = user;

@@ -107,6 +107,8 @@ constructor(
       const payload = this.jwtService.verify(token, { secret: 'mySecretKey' });
       return {
         userId: payload.sub,
+        email: payload.email,
+        name: payload.name,
         role: payload.role,
         isValid: true,
       };
@@ -122,7 +124,7 @@ constructor(
   private generateToken(user: User) {
     return {
       accessToken: this.jwtService.sign(
-        { sub: user.id, email: user.email, role: user.role },
+        { sub: user.id, email: user.email, role: user.role.toLowerCase() },
         { secret: 'mySecretKey', expiresIn: '1h' },
       ),
     };
