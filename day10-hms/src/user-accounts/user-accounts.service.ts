@@ -43,7 +43,7 @@ export class UserAccountsService {
     ) {
       return this.createUserWithRole(
         createUserAccountDto,
-        currentUser,
+        currentUser, 
         Role.MANAGER,
       );
     }

@@ -5,7 +5,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule ,{
-    transport: Transport.GRPC,
+    transport: Transport.GRPC ,
     options:{
       protoPath : join(__dirname, "../user.proto"),
       package : 'user',

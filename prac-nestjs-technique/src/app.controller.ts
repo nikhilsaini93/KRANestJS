@@ -63,7 +63,7 @@ export class AppController {
     const url = 'https://jsonplaceholder.typicode.com/posts';
 
     const response = await lastValueFrom(this.httpService.get(url));
-    console.log(response.data);
+    // console.log(response.data);
     
     return response.data;
   }
