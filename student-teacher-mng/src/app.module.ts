@@ -26,8 +26,11 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
     }), 
     ConfigModule.forRoot({
-      isGlobal: true, // makes env available everywhere
-    }),UsersModule, SubjectModule, MarksModule, StudentDetailsModule, AuthModule],
+      isGlobal: true,
+      envFilePath: '.env',
+
+    }),
+    UsersModule, SubjectModule, MarksModule, StudentDetailsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
