@@ -2,8 +2,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-// const genAI = new GoogleGenerativeAI("AIzaSyDtt9iTVZyMWurYKixqAO4CdfzGNFF3N2g4");
-// const genAI = new GoogleGenerativeAI('AIzaSyCgcC7ERbZldpxR5WHmiBMWbaB_y_qt6tE');
+
 
 @Injectable()
 export class SentimentAnalyzerService {
