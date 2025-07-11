@@ -1,6 +1,4 @@
 // review.entity.ts
-
-
 import { Business } from 'src/bussiness/entities/bussiness.entity';
 import { Customer } from 'src/customers/entities/customer.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';

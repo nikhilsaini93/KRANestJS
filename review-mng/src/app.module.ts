@@ -7,9 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { BussinessModule } from './bussiness/bussiness.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
+  imports: [ConfigModule.forRoot({
+      isGlobal: true, // makes config available app-wide
+    }),    
+    TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
       port: 5433,

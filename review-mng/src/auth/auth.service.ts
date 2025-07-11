@@ -14,7 +14,7 @@ export class AuthService {
         private usersRepository: Repository<User>,
         @InjectRepository(Business) private bussRepository : Repository<Business>
     ) {
-        bcrypt.hash("teacher123" , 10 ).then(console.log)
+        // bcrypt.hash("teacher123" , 10 ).then(console.log)
     }
 
     // async login(loginDto :LoginDto){
@@ -64,7 +64,7 @@ export class AuthService {
     //     }
     // }
 async login(loginDto: LoginDto) {
-  let user;
+  let user ;
   if (loginDto.type === 'customer') {
     user = await this.usersRepository.findOne({ where: { email: loginDto.email } });
   } else {

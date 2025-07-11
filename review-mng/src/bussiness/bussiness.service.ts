@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Business } from './entities/bussiness.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { error } from 'console';
+
 
 @Injectable()
 export class BussinessService {
